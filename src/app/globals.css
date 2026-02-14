@@ -1,26 +1,360 @@
 @import "tailwindcss";
 
+/* CDLS Brand Colors */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand Palette */
+  --cdls-charcoal: #212121;
+  --cdls-ivory: #F9F6F0;
+  --cdls-tree-leaf: #5B9146;
+  --cdls-tree-leaf-dark: #4A7A3A; /* WCAG AA compliant with white text (5.08:1) */
+  --cdls-high-tide: #5C91AD;
+  --cdls-golden-hour: #e58e46;
+
+  /* Semantic Colors */
+  --background: var(--cdls-ivory);
+  --foreground: var(--cdls-charcoal);
+  --primary: var(--cdls-tree-leaf);
+  --secondary: var(--cdls-high-tide);
+  --accent: var(--cdls-golden-hour);
+
+  /* Dark sections (hero, footer) */
+  --background-dark: var(--cdls-charcoal);
+  --foreground-dark: var(--cdls-ivory);
+
+  /* Grid System */
+  --grid-columns: 12;
+  --grid-gutter: 1rem; /* 16px */
 }
 
 @theme inline {
+  /* Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+
+  /* Brand colors directly */
+  --color-charcoal: var(--cdls-charcoal);
+  --color-ivory: var(--cdls-ivory);
+  --color-tree-leaf: var(--cdls-tree-leaf);
+  --color-tree-leaf-dark: var(--cdls-tree-leaf-dark);
+  --color-high-tide: var(--cdls-high-tide);
+  --color-golden-hour: var(--cdls-golden-hour);
+
+  /* Fonts */
+  --font-sans: var(--font-jakarta);
+  --font-heading: var(--font-barlow);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Base styles - in @layer base so Tailwind utilities can override */
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-jakarta), var(--font-sans), system-ui, sans-serif;
+    font-size: 1rem;
+  }
+
+  /*
+   * Typography System
+   *
+   * Headlines: Barlow Condensed, Bold, Uppercase
+   * Body: Plus Jakarta Sans, Regular, Sentence case
+   * UI: Plus Jakarta Sans, Medium/Semibold, Sentence case
+   */
+
+  /* Heading styles - Barlow Condensed */
+  h1, h2, h3 {
+    font-family: var(--font-barlow), var(--font-heading), system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  h1 {
+    font-size: clamp(2.25rem, 6vw, 4rem);
+    line-height: 0.95;
+  }
+
+  h2 {
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    line-height: 1.1;
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    line-height: 1.2;
+  }
+
+  /* h4-h6: Barlow but sentence case */
+  h4, h5, h6 {
+    font-family: var(--font-barlow), var(--font-heading), system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: normal;
+    text-transform: none;
+    line-height: 1.3;
+  }
+
+  h4 {
+    font-size: clamp(1.125rem, 2vw, 1.5rem);
+  }
+
+  h5 {
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+  }
+
+  h6 {
+    font-size: clamp(0.875rem, 1.2vw, 1.125rem);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Dark section utility */
+.dark-section {
+  background: var(--background-dark);
+  color: var(--foreground-dark);
+}
+
+/* Link styles */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--secondary);
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hero Animations */
+@keyframes slideFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-100vh);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(100vh);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(2.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-slide-from-top {
+  animation: slideFromTop 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-from-bottom {
+  animation: slideFromBottom 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease forwards;
+}
+
+@keyframes slideFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(40%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-from-left {
+  animation: slideFromLeft 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-from-right {
+  animation: slideFromRight 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Font utilities */
+.font-barlow {
+  font-family: var(--font-barlow), system-ui, sans-serif;
+}
+
+.font-jakarta {
+  font-family: var(--font-jakarta), system-ui, sans-serif;
+}
+
+/* ===================
+   GLOBAL GRID SYSTEM
+   12 columns, 1rem (16px) gutter
+   =================== */
+
+/* Grid container - applies 12-column grid */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  gap: var(--grid-gutter);
+  width: 100%;
+}
+
+/* Full-width grid with padding */
+.grid-container-full {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  gap: var(--grid-gutter);
+  width: 100%;
+  padding-inline: var(--grid-gutter);
+}
+
+/* Column span utilities */
+.col-span-1 { grid-column: span 1; }
+.col-span-2 { grid-column: span 2; }
+.col-span-3 { grid-column: span 3; }
+.col-span-4 { grid-column: span 4; }
+.col-span-5 { grid-column: span 5; }
+.col-span-6 { grid-column: span 6; }
+.col-span-7 { grid-column: span 7; }
+.col-span-8 { grid-column: span 8; }
+.col-span-9 { grid-column: span 9; }
+.col-span-10 { grid-column: span 10; }
+.col-span-11 { grid-column: span 11; }
+.col-span-12 { grid-column: span 12; }
+.col-span-full { grid-column: 1 / -1; }
+
+/* Column start utilities */
+.col-start-1 { grid-column-start: 1; }
+.col-start-2 { grid-column-start: 2; }
+.col-start-3 { grid-column-start: 3; }
+.col-start-4 { grid-column-start: 4; }
+.col-start-5 { grid-column-start: 5; }
+.col-start-6 { grid-column-start: 6; }
+.col-start-7 { grid-column-start: 7; }
+.col-start-8 { grid-column-start: 8; }
+.col-start-9 { grid-column-start: 9; }
+.col-start-10 { grid-column-start: 10; }
+.col-start-11 { grid-column-start: 11; }
+.col-start-12 { grid-column-start: 12; }
+
+/* Column end utilities */
+.col-end-2 { grid-column-end: 2; }
+.col-end-3 { grid-column-end: 3; }
+.col-end-4 { grid-column-end: 4; }
+.col-end-5 { grid-column-end: 5; }
+.col-end-6 { grid-column-end: 6; }
+.col-end-7 { grid-column-end: 7; }
+.col-end-8 { grid-column-end: 8; }
+.col-end-9 { grid-column-end: 9; }
+.col-end-10 { grid-column-end: 10; }
+.col-end-11 { grid-column-end: 11; }
+.col-end-12 { grid-column-end: 12; }
+.col-end-13 { grid-column-end: 13; }
+
+/* Responsive grid - stacks on mobile */
+@media (max-width: 768px) {
+  .grid-container-responsive {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .md\:col-span-1 { grid-column: span 1; }
+  .md\:col-span-2 { grid-column: span 2; }
+  .md\:col-span-3 { grid-column: span 3; }
+  .md\:col-span-4 { grid-column: span 4; }
+  .md\:col-span-full { grid-column: 1 / -1; }
+}
+
+@media (min-width: 769px) {
+  .md\:col-span-1 { grid-column: span 1; }
+  .md\:col-span-2 { grid-column: span 2; }
+  .md\:col-span-3 { grid-column: span 3; }
+  .md\:col-span-4 { grid-column: span 4; }
+  .md\:col-span-5 { grid-column: span 5; }
+  .md\:col-span-6 { grid-column: span 6; }
+  .md\:col-span-7 { grid-column: span 7; }
+  .md\:col-span-8 { grid-column: span 8; }
+  .md\:col-span-9 { grid-column: span 9; }
+  .md\:col-span-10 { grid-column: span 10; }
+  .md\:col-span-11 { grid-column: span 11; }
+  .md\:col-span-12 { grid-column: span 12; }
+  
+  .md\:col-start-1 { grid-column-start: 1; }
+  .md\:col-start-2 { grid-column-start: 2; }
+  .md\:col-start-3 { grid-column-start: 3; }
+  .md\:col-start-4 { grid-column-start: 4; }
+  .md\:col-start-5 { grid-column-start: 5; }
+  .md\:col-start-6 { grid-column-start: 6; }
+  .md\:col-start-7 { grid-column-start: 7; }
+  .md\:col-start-8 { grid-column-start: 8; }
+  .md\:col-start-9 { grid-column-start: 9; }
+  .md\:col-start-10 { grid-column-start: 10; }
+  .md\:col-start-11 { grid-column-start: 11; }
+  .md\:col-start-12 { grid-column-start: 12; }
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Debug utility - shows grid lines */
+.grid-debug {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(91, 145, 70, 0.1) 0,
+    rgba(91, 145, 70, 0.1) calc((100% - (var(--grid-columns) - 1) * var(--grid-gutter)) / var(--grid-columns)),
+    transparent calc((100% - (var(--grid-columns) - 1) * var(--grid-gutter)) / var(--grid-columns)),
+    transparent calc((100% - (var(--grid-columns) - 1) * var(--grid-gutter)) / var(--grid-columns) + var(--grid-gutter))
+  );
 }
