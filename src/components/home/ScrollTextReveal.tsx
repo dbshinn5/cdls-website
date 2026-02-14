@@ -9,12 +9,13 @@ gsap.registerPlugin(ScrollTrigger);
 interface ScrollTextRevealProps {
   text: string;
   className?: string;
+  style?: React.CSSProperties;
   colorFrom?: string;
   colorTo?: string;
   onComplete?: () => void;
 }
 
-export default function ScrollTextReveal({ text, className = '', colorFrom = '#d4d4d4', colorTo = '#212121', onComplete }: ScrollTextRevealProps) {
+export default function ScrollTextReveal({ text, className = '', style, colorFrom = '#d4d4d4', colorTo = '#212121', onComplete }: ScrollTextRevealProps) {
   const containerRef = useRef<HTMLParagraphElement>(null);
   const hasCompletedRef = useRef(false);
 
@@ -51,7 +52,7 @@ export default function ScrollTextReveal({ text, className = '', colorFrom = '#d
   const lines = text.split('\n');
 
   return (
-    <p ref={containerRef} className={className}>
+    <p ref={containerRef} className={className} style={style}>
       {lines.map((line, lineIndex) => (
         <span key={lineIndex}>
           {line.split(' ').map((word, wordIndex, arr) => (
