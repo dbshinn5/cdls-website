@@ -3,25 +3,10 @@ import Image from 'next/image';
 import { sanityFetch, isSanityConfigured, urlFor } from '@/lib/sanity';
 import { allFellowsQuery, allNewsPostsQuery } from '@/lib/queries';
 import { Fellow, NewsPost } from '@/types';
-import { createImageUrlBuilder } from '@sanity/image-url';
 import HeroV2 from '@/components/home/HeroV2';
-import ParallaxGallery from '@/components/home/ParallaxGallery';
-import ScrollTextSection from '@/components/home/ScrollTextSection';
 import ScrollTextSectionLight from '@/components/home/ScrollTextSectionLight';
-import SnapshotsGreenGlow from '@/components/home/snapshots/SnapshotsGreenGlow';
 import LatestNews from '@/components/home/LatestNews';
-import CTAPhotoCollage from '@/components/home/CTAPhotoCollage';
 import FeaturedFellows from '@/components/home/FeaturedFellows';
-
-const builder = createImageUrlBuilder({
-  projectId: '0r5zwpua',
-  dataset: 'fellows',
-});
-
-function getSanityImageUrl(image: Fellow['image'], width: number, height: number): string {
-  if (!image?.asset?._ref) return '';
-  return builder.image(image).width(width).height(height).fit('crop').url();
-}
 
 export default async function HomeV2() {
   let fellows: Fellow[] = [];
@@ -40,9 +25,6 @@ export default async function HomeV2() {
     }
   }
 
-  // Prepare fellows for different sections
-  const galleryFellows = fellows.slice(0, 7);
-  const featuredFellows = fellows.slice(0, 4);
   const fellowsWithImages = fellows.filter(f => f.image?.asset?._ref);
 
   // Prepare news items for LatestNews component (serialize for client component)
