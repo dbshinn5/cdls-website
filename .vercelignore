@@ -1,0 +1,28 @@
+# preview/dev pages
+src/app/fellows-preview/
+src/app/hero-preview/
+src/app/home-v2/
+src/app/nav-preview/
+src/app/snapshots-preview/
+src/app/typography/
+src/app/impact/
+
+# unused components
+src/components/home/HeroSection.tsx
+src/components/home/HeroVariant1.tsx
+src/components/home/HeroVariant2.tsx
+src/components/home/HeroVariant3.tsx
+src/components/home/HeroVariant4.tsx
+src/components/home/HeroVariant5.tsx
+src/components/home/HeroVariant6.tsx
+src/components/home/snapshots/
+src/components/home/programs/
+src/components/home/CTAPhotoCollage.tsx
+src/components/home/ParallaxGallery.tsx
+src/components/home/ScrollTextSection.tsx
+
+# data import scripts
+scripts/
+
+# misc
+Programinspo.png

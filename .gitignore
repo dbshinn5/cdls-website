@@ -61,8 +61,6 @@ src/components/home/snapshots/
 src/components/home/programs/
 src/components/home/CTAPhotoCollage.tsx
 src/components/home/ParallaxGallery.tsx
-src/components/home/ScrollTextReveal.tsx
-src/components/home/LineRevealText.tsx
 src/components/home/ScrollTextSection.tsx
 
 # data import scripts (keep locally)
@@ -74,3 +72,4 @@ Programinspo.png
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.env*.local
