@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
+import { Typewriter } from '@/components/ui/Typewriter';
 
 const rows = [
   [
@@ -33,185 +34,100 @@ const cycleWords = ['Science.', 'Leadership.', 'Community.', 'Discovery.', 'Rese
 const TILT = -5;
 const GAP = '0.75rem';
 const ROW_HEIGHT = '14rem';
-const EXPAND_EASE = 'power2.out';
 
 export default function HeroV2() {
   const sectionRef = useRef<HTMLElement>(null);
+  const solidBgRef = useRef<HTMLDivElement>(null);
   const photoContainerRef = useRef<HTMLDivElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
   const vignetteRef = useRef<HTMLDivElement>(null);
   const taglineRef = useRef<HTMLParagraphElement>(null);
-  const fixedTextRef = useRef<HTMLDivElement>(null);
-  const cycleContainerRef = useRef<HTMLDivElement>(null);
-  const wordRefs = useRef<(HTMLDivElement | null)[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [showTypewriter, setShowTypewriter] = useState(false);
+  const revealTlRef = useRef<gsap.core.Timeline | null>(null);
+
+  const handleTypewriterComplete = useCallback(() => {
+    setTimeout(() => {
+      revealTlRef.current?.play();
+    }, 300);
+  }, []);
 
   useEffect(() => {
-    // Measure natural widths before GSAP collapses them
-    const wordWidths: number[] = [];
-    wordRefs.current.forEach((wordEl) => {
-      if (!wordEl) return;
-      wordWidths.push(wordEl.offsetWidth);
-    });
-
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-
-      // --- Initial state: blank screen ---
+      // --- Initial state ---
       if (photoContainerRef.current) gsap.set(photoContainerRef.current, { opacity: 0 });
       if (vignetteRef.current) gsap.set(vignetteRef.current, { opacity: 0 });
-      // tagline chars start hidden via CSS opacity-0
+      if (taglineRef.current) gsap.set(taglineRef.current, { opacity: 0 });
       if (scrollRef.current) gsap.set(scrollRef.current, { opacity: 0 });
 
-      // Hide navbar
       const header = document.querySelector('header');
       if (header) gsap.set(header, { yPercent: -100 });
 
-      // Offset vertically only — text stays at final x position
-      if (fixedTextRef.current) {
-        gsap.set(fixedTextRef.current, { y: -(vh * 0.15) });
-      }
-      if (cycleContainerRef.current) {
-        gsap.set(cycleContainerRef.current, { y: vh * 0.15 });
-      }
-
-      // Photo rows initial state
       rowRefs.current.forEach((row, i) => {
         if (!row) return;
         gsap.set(row, { x: i % 2 === 0 ? '-35%' : '35%', opacity: 0 });
       });
 
-      // Collapse all words, make visible
-      wordRefs.current.forEach((wordEl) => {
-        if (!wordEl) return;
-        gsap.set(wordEl, { width: 0, opacity: 1 });
-      });
+      // Start typewriter immediately
+      setShowTypewriter(true);
 
-      // === Phase 1: "We are reimagining" typewriter — letter by letter ===
-      if (fixedTextRef.current) {
-        const fixedChars = fixedTextRef.current.querySelectorAll('.fixed-char');
-        tl.to(fixedChars, {
-          opacity: 1,
-          duration: 0.01,
-          stagger: 0.04,
-        }, 0.3);
-      }
+      // === Reveal timeline (paused — triggered when typewriter finishes) ===
+      const reveal = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+      revealTlRef.current = reveal;
 
-      // === Phase 2: Cycle words — expand in, backspace out ===
-      const CYCLE_START = 1.4;
-      const WORD_EXPAND = 0.4;
-      const WORD_HOLD = 0.35;
-      const CHAR_DELETE = 0.03;
-      const GAP_BETWEEN = 0.1;
+      // Fade out solid background to reveal photos
+      reveal.to(solidBgRef.current, {
+        opacity: 0,
+        duration: 0.6,
+        ease: 'power2.inOut',
+      }, 0);
 
-      let currentTime = CYCLE_START;
-
-      wordRefs.current.forEach((wordEl, i) => {
-        if (!wordEl) return;
-        const chars = wordEl.querySelectorAll('.cycle-char');
-        const isLast = i === cycleWords.length - 1;
-        const backspaceDur = chars.length * CHAR_DELETE;
-
-        // Expand width
-        tl.to(wordEl, {
-          width: wordWidths[i] || 'auto',
-          duration: WORD_EXPAND,
-          ease: EXPAND_EASE,
-        }, currentTime);
-
-        currentTime += WORD_EXPAND + WORD_HOLD;
-
-        if (!isLast) {
-          // Backspace: characters vanish right-to-left
-          tl.to(chars, {
-            opacity: 0,
-            duration: 0.01,
-            stagger: { each: CHAR_DELETE, from: 'end' },
-          }, currentTime);
-
-          tl.set(wordEl, { width: 0 }, currentTime + backspaceDur + 0.03);
-
-          currentTime += backspaceDur + GAP_BETWEEN;
-        }
-      });
-
-      // === Phase 3: Vertical convergence to center ===
-      const vSlideStart = currentTime + 0.3;
-
-      if (fixedTextRef.current) {
-        tl.to(fixedTextRef.current, {
-          y: 0,
-          duration: 0.8,
-          ease: 'power2.inOut',
-        }, vSlideStart);
-      }
-      if (cycleContainerRef.current) {
-        tl.to(cycleContainerRef.current, {
-          y: 0,
-          duration: 0.8,
-          ease: 'power2.inOut',
-        }, vSlideStart);
-      }
-
-      // === Phase 4: Tagline typewriter ===
-      const taglineStart = vSlideStart + 0.5;
-
-      if (taglineRef.current) {
-        const taglineChars = taglineRef.current.querySelectorAll('.tagline-char');
-        tl.to(taglineChars, {
-          opacity: 1,
-          duration: 0.01,
-          stagger: 0.008,
-        }, taglineStart);
-      }
-
-      // === Phase 5: Photos slide in ===
-      const photoStart = taglineStart + 0.6;
-
-      if (photoContainerRef.current) {
-        tl.to(photoContainerRef.current, {
-          opacity: 1,
-          duration: 0.4,
-          ease: 'power1.in',
-        }, photoStart);
-      }
+      // Photos slide in
+      reveal.to(photoContainerRef.current, {
+        opacity: 1,
+        duration: 0.4,
+        ease: 'power1.in',
+      }, 0.1);
 
       rowRefs.current.forEach((row, i) => {
         if (!row) return;
-        tl.to(row, {
+        reveal.to(row, {
           x: '0%',
           opacity: 1,
-          duration: 1.6,
+          duration: 1.4,
           ease: 'power4.out',
-        }, photoStart + i * 0.1);
+        }, 0.1 + i * 0.08);
       });
 
-      if (vignetteRef.current) {
-        tl.to(vignetteRef.current, {
-          opacity: 1,
-          duration: 1.4,
-          ease: 'power2.inOut',
-        }, photoStart + 0.2);
-      }
+      // Vignette
+      reveal.to(vignetteRef.current, {
+        opacity: 1,
+        duration: 1.0,
+        ease: 'power2.inOut',
+      }, 0.2);
 
-      if (scrollRef.current) {
-        tl.to(scrollRef.current, {
-          opacity: 1,
-          duration: 1.0,
-          ease: 'power1.inOut',
-        }, photoStart + 1.0);
-      }
+      // Tagline
+      reveal.to(taglineRef.current, {
+        opacity: 1,
+        duration: 0.5,
+        ease: 'power2.out',
+      }, 0.4);
 
+      // Navbar + scroll
       if (header) {
-        tl.to(header, {
+        reveal.to(header, {
           yPercent: 0,
-          duration: 0.6,
+          duration: 0.5,
           ease: 'power2.out',
-        }, photoStart + 0.8);
+        }, 0.5);
       }
+
+      reveal.to(scrollRef.current, {
+        opacity: 1,
+        duration: 0.6,
+        ease: 'power1.inOut',
+      }, 0.7);
+
     }, sectionRef);
 
     return () => ctx.revert();
@@ -222,7 +138,10 @@ export default function HeroV2() {
       ref={sectionRef}
       className="relative min-h-screen h-[100dvh] overflow-hidden bg-charcoal flex items-center justify-center"
     >
-      {/* Diagonal rows background */}
+      {/* Solid background that fades away to reveal photos */}
+      <div ref={solidBgRef} className="absolute inset-0 z-[3] bg-charcoal" />
+
+      {/* Photo grid background */}
       <div
         ref={photoContainerRef}
         className="absolute z-[1] flex flex-col"
@@ -275,56 +194,30 @@ export default function HeroV2() {
         }}
       />
 
-      {/* Main Content */}
+      {/* Headline + tagline — stays visible throughout */}
       <main className="relative z-10 px-[2rem] md:px-[4rem] w-full max-w-7xl mx-auto">
-        {/* Headline — final state is one centered row, baseline-aligned */}
-        <div className="flex flex-row items-baseline justify-center gap-[0.3em] font-barlow font-bold text-[clamp(3rem,6vw,5.5rem)] leading-[0.85] tracking-[-0.03em] uppercase">
-          {/* "We are reimagining" — typewriter letter by letter */}
-          <div ref={fixedTextRef} className="pb-[0.08em] flex-shrink-0 whitespace-nowrap">
-            {'We are reimagining'.split('').map((char, ci) => (
-              <span key={ci} className="fixed-char inline-block text-white opacity-0">
-                {char === ' ' ? '\u00A0' : char}
-              </span>
-            ))}
-          </div>
+        <h1 className="font-barlow font-bold text-[clamp(1.8rem,4.5vw,5rem)] leading-[1] tracking-[-0.03em] uppercase text-white text-center whitespace-nowrap">
+          We are reimagining{' '}
+          {showTypewriter ? (
+            <Typewriter
+              words={cycleWords}
+              speed={30}
+              delayBetweenWords={100}
+              cursor={true}
+              cursorChar="|"
+              loop={false}
+              onComplete={handleTypewriterComplete}
+            />
+          ) : (
+            <span className="invisible">Research.</span>
+          )}
+        </h1>
 
-          {/* Cycling word container — invisible sizer sets baseline */}
-          <div
-            ref={cycleContainerRef}
-            className="relative pb-[0.08em] flex-shrink-0 overflow-hidden"
-          >
-            {/* Invisible sizer — establishes height and baseline for flex alignment */}
-            <span className="invisible whitespace-nowrap block" aria-hidden="true">
-              Leadership.
-            </span>
-            {cycleWords.map((word, i) => (
-              <div
-                key={word}
-                ref={(el) => { wordRefs.current[i] = el; }}
-                className="absolute inset-0 overflow-hidden opacity-0"
-              >
-                <div className="cycle-word-inner text-white whitespace-nowrap">
-                  {word.split('').map((char, ci) => (
-                    <span key={ci} className="cycle-char inline-block">
-                      {char}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Tagline — appears with photos */}
         <p
           ref={taglineRef}
-          className="font-jakarta font-medium text-[clamp(0.75rem,1.2vw,1rem)] text-ivory/70 text-center mt-6"
+          className="font-jakarta font-medium text-[clamp(0.75rem,1.2vw,1rem)] text-ivory/70 text-center mt-6 opacity-0"
         >
-          {'The Consortium for Developing Leadership in Science cultivates the next generation of scientists, leaders, and changemakers.'.split('').map((char, ci) => (
-            <span key={ci} className="tagline-char inline-block opacity-0">
-              {char === ' ' ? '\u00A0' : char}
-            </span>
-          ))}
+          The Consortium for Developing Leadership in Science cultivates the next generation of scientists, leaders, and changemakers.
         </p>
       </main>
 
