@@ -1,6 +1,6 @@
 export const metadata = {
   title: 'Contact | CDLS',
-  description: 'Get in touch with the Center for Developing Leadership in Science.',
+  description: 'Get in touch with the Consortium for Developing Leadership in Science.',
 };
 
 export default function ContactPage() {

@@ -22,7 +22,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "CDLS | Center for Developing Leadership in Science",
+  title: "CDLS | Consortium for Developing Leadership in Science",
   description: "Reimagining who leads, who learns, and who shapes the future of science through equity-centered approaches.",
   keywords: ["science leadership", "environmental justice", "diversity in STEM", "UCLA", "fellowships"],
 };

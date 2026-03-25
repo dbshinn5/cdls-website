@@ -58,7 +58,7 @@ export default function ScrollTextSectionLight() {
           style={{ transitionDelay: '0.8s' }}
         >
           <Link
-            href="https://giving.ucla.edu/campaign/donate.aspx?Fund=64061o" target="_blank" rel="noopener noreferrer"
+            href="https://www.paypal.com/donate/?hosted_button_id=DFQ7D67FMX7J4" target="_blank" rel="noopener noreferrer"
             className="group inline-flex items-center gap-3 bg-charcoal hover:bg-charcoal/90 rounded-full pl-6 pr-2 py-2 transition-all"
           >
             <span className="font-jakarta text-[13px] font-medium uppercase tracking-[0.08em] text-ivory">

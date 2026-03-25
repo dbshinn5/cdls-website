@@ -6,7 +6,7 @@ import type { NewsPost } from '@/types';
 
 export const metadata = {
   title: 'News | CDLS',
-  description: 'Latest news from the Center for Developing Leadership in Science.',
+  description: 'Latest news from the Consortium for Developing Leadership in Science.',
 };
 
 function formatDate(dateString: string) {

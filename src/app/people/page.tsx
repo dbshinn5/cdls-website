@@ -5,7 +5,7 @@ import PeopleGrid from './PeopleGrid';
 
 export const metadata = {
   title: 'People | CDLS',
-  description: 'Meet the fellows, staff, and community members of the Center for Developing Leadership in Science.',
+  description: 'Meet the fellows, staff, and community members of the Consortium for Developing Leadership in Science.',
 };
 
 export default async function PeoplePage() {

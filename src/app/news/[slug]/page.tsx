@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!post) return { title: 'Article Not Found | CDLS' };
   return {
     title: `${post.title} | CDLS News`,
-    description: post.excerpt || 'News from the Center for Developing Leadership in Science.',
+    description: post.excerpt || 'News from the Consortium for Developing Leadership in Science.',
   };
 }
 

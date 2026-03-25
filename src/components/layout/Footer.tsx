@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default function Footer() {
   return (
@@ -17,7 +16,7 @@ export default function Footer() {
               </p>
             </div>
             <Link
-              href="https://giving.ucla.edu/campaign/donate.aspx?Fund=64061o" target="_blank" rel="noopener noreferrer"
+              href="https://www.paypal.com/donate/?hosted_button_id=DFQ7D67FMX7J4" target="_blank" rel="noopener noreferrer"
               className="group flex items-center gap-3 bg-charcoal hover:bg-charcoal/90 rounded-full pl-6 pr-2 py-2 transition-all flex-shrink-0"
             >
               <span className="font-barlow font-bold text-[14px] uppercase tracking-[0.08em] text-ivory">
@@ -37,13 +36,9 @@ export default function Footer() {
           {/* Bottom row: Logo, socials, copyright */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-5">
             <Link href="/" className="flex-shrink-0">
-              <Image
-                src="/images/cdls-logo.png"
-                alt="Center for Developing Leadership in Science"
-                width={200}
-                height={50}
-                className="h-8 w-auto"
-              />
+              <span className="font-barlow font-black text-[18px] tracking-tight text-charcoal">
+                CDLS
+              </span>
             </Link>
 
             {/* Socials */}

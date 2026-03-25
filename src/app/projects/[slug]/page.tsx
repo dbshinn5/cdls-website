@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!project) return { title: 'Project Not Found | CDLS' };
   return {
     title: `${project.title} | CDLS Projects`,
-    description: project.description || 'A project from the Center for Developing Leadership in Science.',
+    description: project.description || 'A project from the Consortium for Developing Leadership in Science.',
   };
 }
 

@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 
 interface NavItem {
@@ -59,14 +58,9 @@ export default function Header() {
       >
         {/* Logo */}
         <Link href="/" className="flex items-center flex-shrink-0 pl-2 pr-3">
-          <Image
-            src="/images/cdls-logo.png"
-            alt="Center for Developing Leadership in Science"
-            width={240}
-            height={60}
-            className="h-9 w-auto"
-            priority
-          />
+          <span className="font-barlow font-black text-[22px] tracking-tight text-charcoal">
+            CDLS
+          </span>
         </Link>
 
         {/* Separator */}
@@ -124,7 +118,7 @@ export default function Header() {
         {/* CTA Button */}
         <div className="hidden lg:block">
           <Link
-            href="https://giving.ucla.edu/campaign/donate.aspx?Fund=64061o" target="_blank" rel="noopener noreferrer"
+            href="https://www.paypal.com/donate/?hosted_button_id=DFQ7D67FMX7J4" target="_blank" rel="noopener noreferrer"
             className="group flex items-center gap-2 bg-charcoal hover:bg-charcoal/90 rounded-full pl-4 pr-1.5 py-1 transition-all ml-1"
           >
             <span className="font-barlow font-bold text-[13px] uppercase tracking-[0.08em] text-ivory">
@@ -207,7 +201,7 @@ export default function Header() {
               )
             )}
             <Link
-              href="https://giving.ucla.edu/campaign/donate.aspx?Fund=64061o" target="_blank" rel="noopener noreferrer"
+              href="https://www.paypal.com/donate/?hosted_button_id=DFQ7D67FMX7J4" target="_blank" rel="noopener noreferrer"
               onClick={() => setMobileMenuOpen(false)}
               className="mt-3 flex items-center justify-center gap-2 bg-charcoal rounded-full px-5 py-2.5"
             >

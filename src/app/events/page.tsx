@@ -7,7 +7,7 @@ import CalendarToggle from '@/components/events/CalendarToggle';
 
 export const metadata = {
   title: 'Events | CDLS',
-  description: 'Upcoming and past events from the Center for Developing Leadership in Science.',
+  description: 'Upcoming and past events from the Consortium for Developing Leadership in Science.',
 };
 
 function formatEventDate(startDateTime: string, endDateTime?: string) {

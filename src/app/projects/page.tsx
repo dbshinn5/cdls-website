@@ -5,7 +5,7 @@ import ProjectsGrid from './ProjectsGrid';
 
 export const metadata = {
   title: 'Projects | CDLS',
-  description: 'Research projects from the Center for Developing Leadership in Science.',
+  description: 'Research projects from the Consortium for Developing Leadership in Science.',
 };
 
 export default async function ProjectsPage() {

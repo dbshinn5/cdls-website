@@ -320,7 +320,7 @@ export default function HeroV2() {
           ref={taglineRef}
           className="font-jakarta font-medium text-[clamp(0.75rem,1.2vw,1rem)] text-ivory/70 text-center mt-6"
         >
-          {'The Center for Developing Leadership in Science cultivates the next generation of scientists, leaders, and changemakers.'.split('').map((char, ci) => (
+          {'The Consortium for Developing Leadership in Science cultivates the next generation of scientists, leaders, and changemakers.'.split('').map((char, ci) => (
             <span key={ci} className="tagline-char inline-block opacity-0">
               {char === ' ' ? '\u00A0' : char}
             </span>

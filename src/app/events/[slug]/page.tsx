@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!event) return { title: 'Event Not Found | CDLS' };
   return {
     title: `${event.title} | CDLS Events`,
-    description: event.description || 'An event from the Center for Developing Leadership in Science.',
+    description: event.description || 'An event from the Consortium for Developing Leadership in Science.',
   };
 }
 
