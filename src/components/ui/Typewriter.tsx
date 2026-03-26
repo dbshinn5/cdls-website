@@ -91,7 +91,7 @@ export function Typewriter({
   return (
     <span className={className}>
       {displayText}
-      {cursor && (
+      {cursor && !done && (
         <span className="ml-1 transition-opacity duration-75" style={{ opacity: showCursor ? 1 : 0 }}>
           {cursorChar}
         </span>
