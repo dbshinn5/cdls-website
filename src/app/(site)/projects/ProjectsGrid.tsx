@@ -7,7 +7,7 @@ import { createImageUrlBuilder } from '@sanity/image-url';
 import { Project, ProjectCategory, projectCategoryLabels, SanityImage } from '@/types';
 
 const builder = createImageUrlBuilder({
-  projectId: '0r5zwpua',
+  projectId: 'nmidzq40',
   dataset: 'fellows',
 });
 

@@ -7,7 +7,7 @@ import type { Fellow } from '@/types';
 import { createImageUrlBuilder } from '@sanity/image-url';
 
 const builder = createImageUrlBuilder({
-  projectId: '0r5zwpua',
+  projectId: 'nmidzq40',
   dataset: 'fellows',
 });
 
