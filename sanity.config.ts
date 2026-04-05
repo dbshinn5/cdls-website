@@ -7,7 +7,7 @@ export default defineConfig({
   name: 'default',
   title: 'CDLS Website',
 
-  projectId: '0r5zwpua',
+  projectId: 'nmidzq40',
   dataset: 'fellows',
 
   basePath: '/studio',
