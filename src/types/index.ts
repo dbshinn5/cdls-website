@@ -160,6 +160,16 @@ export const tagLabels: Record<FellowTag, string> = {
   'past-community-members': 'Past Community Members',
 }
 
+// Policy type - matches policy Sanity schema
+export interface Policy {
+  _id: string
+  title: string
+  slug: { current: string }
+  excerpt?: string
+  body?: PortableTextBlock[]
+  order?: number
+}
+
 // Legacy alias for backward compatibility
 export type Person = Fellow
 export type PersonCategory = FellowCategory

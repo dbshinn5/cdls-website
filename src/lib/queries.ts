@@ -209,6 +209,25 @@ export const eventBySlugQuery = `*[_type == "event" && slug.current == $slug][0]
   originalUrl
 }`
 
+// ── Policies ────────────────────────────────────────────────────────
+
+export const allPoliciesQuery = `*[_type == "policy"] | order(order asc, title asc) {
+  _id,
+  title,
+  slug,
+  excerpt,
+  order
+}`
+
+export const policyBySlugQuery = `*[_type == "policy" && slug.current == $slug][0] {
+  _id,
+  title,
+  slug,
+  excerpt,
+  body,
+  order
+}`
+
 // Legacy aliases for backward compatibility
 export const allPeopleQuery = allFellowsQuery
 export const personBySlugQuery = fellowBySlugQuery
