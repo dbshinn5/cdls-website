@@ -5,6 +5,7 @@ import { sanityFetch, urlFor } from '@/lib/sanity';
 import { policyBySlugQuery, allPoliciesQuery } from '@/lib/queries';
 import type { Policy } from '@/types';
 
+export const revalidate = 60;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {

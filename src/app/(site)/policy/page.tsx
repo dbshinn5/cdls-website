@@ -3,6 +3,8 @@ import { sanityFetch } from '@/lib/sanity';
 import { allPoliciesQuery } from '@/lib/queries';
 import type { Policy } from '@/types';
 
+export const revalidate = 60;
+
 export const metadata = {
   title: 'Policy | CDLS',
   description: 'Policy resources from the Consortium for Developing Leadership in Science.',
