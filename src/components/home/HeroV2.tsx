@@ -45,8 +45,7 @@ export default function HeroV2() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const revealTlRef = useRef<gsap.core.Timeline | null>(null);
 
-  const hasPlayed = typeof window !== 'undefined' && sessionStorage.getItem('heroAnimationPlayed') === 'true';
-
+  const [hasPlayed, setHasPlayed] = useState(false);
   const [showTypewriter, setShowTypewriter] = useState(false);
 
   const handleTypewriterComplete = useCallback(() => {
@@ -56,10 +55,15 @@ export default function HeroV2() {
   }, []);
 
   useEffect(() => {
+    const alreadyPlayed = sessionStorage.getItem('heroAnimationPlayed') === 'true';
+    if (alreadyPlayed) {
+      setHasPlayed(true);
+    }
+
     const ctx = gsap.context(() => {
       const header = document.querySelector('header');
 
-      if (hasPlayed) {
+      if (alreadyPlayed) {
         // --- Skip animation: set everything to final state ---
         if (solidBgRef.current) gsap.set(solidBgRef.current, { opacity: 0 });
         if (photoContainerRef.current) gsap.set(photoContainerRef.current, { opacity: 1 });
@@ -156,7 +160,7 @@ export default function HeroV2() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [hasPlayed]);
+  }, []);
 
   return (
     <section
