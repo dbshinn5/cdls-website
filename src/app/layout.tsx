@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Barlow_Condensed, Plus_Jakarta_Sans } from "next/font/google";
+import { SanityLive } from "@/lib/sanity-live";
 import "./globals.css";
 
 const inter = Inter({
@@ -34,6 +35,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${barlowCondensed.variable} ${plusJakarta.variable} antialiased`}>
         {children}
+        <SanityLive />
       </body>
     </html>
   );
