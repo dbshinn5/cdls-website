@@ -43,8 +43,11 @@ export default function HeroV2() {
   const vignetteRef = useRef<HTMLDivElement>(null);
   const taglineRef = useRef<HTMLParagraphElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [showTypewriter, setShowTypewriter] = useState(false);
   const revealTlRef = useRef<gsap.core.Timeline | null>(null);
+
+  const hasPlayed = typeof window !== 'undefined' && sessionStorage.getItem('heroAnimationPlayed') === 'true';
+
+  const [showTypewriter, setShowTypewriter] = useState(false);
 
   const handleTypewriterComplete = useCallback(() => {
     setTimeout(() => {
@@ -54,13 +57,29 @@ export default function HeroV2() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // --- Initial state ---
+      const header = document.querySelector('header');
+
+      if (hasPlayed) {
+        // --- Skip animation: set everything to final state ---
+        if (solidBgRef.current) gsap.set(solidBgRef.current, { opacity: 0 });
+        if (photoContainerRef.current) gsap.set(photoContainerRef.current, { opacity: 1 });
+        if (vignetteRef.current) gsap.set(vignetteRef.current, { opacity: 1 });
+        if (taglineRef.current) gsap.set(taglineRef.current, { opacity: 1 });
+        if (scrollRef.current) gsap.set(scrollRef.current, { opacity: 1 });
+        if (header) gsap.set(header, { yPercent: 0 });
+        rowRefs.current.forEach((row) => {
+          if (!row) return;
+          gsap.set(row, { x: '0%', opacity: 1 });
+        });
+        return;
+      }
+
+      // --- First visit: full animation ---
       if (photoContainerRef.current) gsap.set(photoContainerRef.current, { opacity: 0 });
       if (vignetteRef.current) gsap.set(vignetteRef.current, { opacity: 0 });
       if (taglineRef.current) gsap.set(taglineRef.current, { opacity: 0 });
       if (scrollRef.current) gsap.set(scrollRef.current, { opacity: 0 });
 
-      const header = document.querySelector('header');
       if (header) gsap.set(header, { yPercent: -100 });
 
       rowRefs.current.forEach((row, i) => {
@@ -72,7 +91,13 @@ export default function HeroV2() {
       setShowTypewriter(true);
 
       // === Reveal timeline (paused — triggered when typewriter finishes) ===
-      const reveal = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+      const reveal = gsap.timeline({
+        paused: true,
+        defaults: { ease: 'power3.out' },
+        onComplete: () => {
+          sessionStorage.setItem('heroAnimationPlayed', 'true');
+        },
+      });
       revealTlRef.current = reveal;
 
       // Fade out solid background to reveal photos
@@ -131,7 +156,7 @@ export default function HeroV2() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [hasPlayed]);
 
   return (
     <section
@@ -198,7 +223,9 @@ export default function HeroV2() {
       <main className="relative z-10 px-[2rem] md:px-[4rem] w-full max-w-7xl mx-auto">
         <h1 className="font-barlow font-bold text-[clamp(1.8rem,4.5vw,5rem)] leading-[1] tracking-[-0.03em] uppercase text-white text-center whitespace-nowrap">
           We are reimagining{' '}
-          {showTypewriter ? (
+          {hasPlayed ? (
+            <span>Research.</span>
+          ) : showTypewriter ? (
             <Typewriter
               words={cycleWords}
               speed={30}
